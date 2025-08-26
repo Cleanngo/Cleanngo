@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean'n'Go - Lavage Auto à Domicile</title>
+  <meta name="description" content="Clean'n'Go - Lavage auto à domicile à Casablanca. Rapide, professionnel et éco-responsable. Réservez facilement sur WhatsApp.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- Reset & Base --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: #f7f9fc; color: #333; scroll-behavior: smooth; }
+    a { text-decoration: none; color: inherit; }
+
+    /* --- Header --- */
+    header { background: #0077ff; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    header h1 { font-size: 1.8rem; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    nav a { margin: 0 15px; font-weight: 500; transition: 0.3s; }
+    nav a:hover { color: #ffe600; }
+
+    /* --- Sections --- */
+    section { padding: 60px 20px; max-width: 1100px; margin: auto; text-align: center; opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    section.visible { opacity: 1; transform: translateY(0); }
+    section h2 { font-size: 2rem; margin-bottom: 30px; color: #0077ff; }
+
+    /* --- Accueil --- */
+    .hero { background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover; color: white; height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-shadow: 0 3px 8px rgba(0,0,0,0.5); }
+    .hero h1 { font-size: 3rem; animation: fadeIn 1s ease forwards; }
+    .hero p { font-size: 1.3rem; margin: 15px 0; animation: fadeIn 1.5s ease forwards; }
+    .btn { display: inline-block; background: #ffe600; color: #333; padding: 12px 25px; border-radius: 30px; font-weight: bold; transition: 0.3s; }
+    .btn:hover { background: #ffc400; transform: scale(1.05); }
+
+    /* --- Services --- */
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; text-align: left; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .card h3 { margin-bottom: 10px; color: #0077ff; }
+    .card p { font-size: 0.95rem; line-height: 1.5; }
+
+    /* --- Tarifs --- */
+    .tarifs { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .price { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; text-align: center; }
+    .price:hover { transform: scale(1.05); }
+    .price h3 { margin-bottom: 10px; color: #0077ff; }
+    .price span { font-size: 1.5rem; font-weight: bold; color: #333; display: block; margin-bottom: 15px; }
+    .price ul { list-style: none; text-align: left; }
+    .price ul li { margin: 8px 0; color: #008000; font-weight: 500; }
+
+    /* --- Avis Clients --- */
+    .avis { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .avis .avis-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-style: italic; }
+    .avis .avis-card b { display: block; margin-top: 10px; color: #0077ff; }
+
+    /* --- Contact --- */
+    .contact p { margin: 10px 0; }
+    .whatsapp { background: #25d366; color: white; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: inline-block; margin-top: 15px; transition: 0.3s; }
+    .whatsapp:hover { background: #1da851; transform: scale(1.05); }
+
+    /* --- WhatsApp Floating Button --- */
+    .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 15px; border-radius: 50%; font-size: 1.5rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s; z-index: 1000; }
+    .whatsapp-float:hover { background: #1da851; transform: scale(1.1); }
+
+    /* --- Footer --- */
+    footer { background: #0077ff; color: white; text-align: center; padding: 15px; margin-top: 40px; }
+
+    /* --- FAQ --- */
+    .faq-item { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px; text-align: left; cursor: pointer; transition: 0.3s; }
+    .faq-item:hover { transform: translateX(5px); }
+    .faq-question { font-weight: bold; color: #0077ff; }
+    .faq-answer { display: none; margin-top: 10px; font-size: 0.95rem; line-height: 1.5; }
+
+    /* --- Animations --- */
+    @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+
+    /* --- Avant/Après Slider (AJOUT, image split unique intégrée) --- */
+    .aa-wrapper{position:relative;max-width:900px;margin:20px auto;border-radius:12px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.1);aspect-ratio:3/2}
+    .aa-base,.aa-overlay{position:absolute;inset:0;background-image:url('data:image/webp;base64,UklGRtTNAgBXRUJQVlA4IMjNAgBQ6wmdASp4BaUDPmEskUckIigqJvRbsUAMCWdsz6RY/yHBj+V/6u5zjXDiDg7q6C/8c1Jzv3s7xvJ9wH1e0F9r3t2Pj9y2c9Wf0f8m8m3c5dQbq5m5b1bS9W2M3rHk2bUo4r2b9dZy1qVqk0lfHcQGt0kqQd2sY1cXCrH2mLZ8dZq8b7t7tq/QGbmQz7z5YJc4lq2G7ZsT1b7Wkz2m1bJv4O3mYoy2y7h1X0Z7+eFJx2mZl9zvQvVqz1zN2k7a1i3hSx9R6l2c4e6kK1JHj9qR8HkH8mV1J6sXK5pQ0j2nJ3YF+7QkH4d7pY7e4T8jv5rS9w7vQ3u6f0tC5a6xqK8Y9o7r+3G7hQ9p5w3d0K8t5m0r8bN1o8p9d1N9hZ1aWq4aQq9pU5xwY8wQJgQ3Vv2z7vA2sB6kzH2vK1Xr2kRt0n+3K0k5r1f1W03s4mY9QF6sQF7fK1D8m3aV+f7v7r7n7v7VQbVbYJwVw0U0U0U');background-size:200% 100%;background-repeat:no-repeat;background-position:left center}
+    .aa-overlay{width:50%;background-position:right center;border-right:2px solid #fff}
+    .aa-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+    .aa-handle{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:2px solid #fff}
+    .aa-handle::before{content:"";position:absolute;left:0;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:999px;background:#ffe600;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>🚗 Clean'n'Go</h1>
+    <nav>
+      <a href="#accueil">Accueil</a>
+      <a href="#services">Nos Services</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#avis">Avis</a>
+      <a href="#contact">Contact</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <!-- Accueil -->
+  <section id="accueil" class="hero">
+    <h1>Lavage Auto à Domicile</h1>
+    <p>Rapide • Professionnel • Éco-responsable</p>
+    <a href="https://wa.me/212649746416" target="_blank" class="btn">Réserver sur WhatsApp</a>
+  </section>
+
+  <!-- Nos Services -->
+  <section id="services">
+    <h2>Nos Services</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Lavage Simple 🚗</h3>
+        <p>Un nettoyage rapide mais complet, intérieur + extérieur, idéal pour un entretien régulier de votre voiture.</p>
+      </div>
+      <div class="card">
+        <h3>Lavage Spécial 🧽</h3>
+        <p>Une formule complète pour redonner de la fraîcheur à votre véhicule, avec soin de l’habitacle et des jantes.</p>
+      </div>
+      <div class="card">
+        <h3>Pack Premium ⭐</h3>
+        <p>Le must-have du lavage auto : intérieur et extérieur en profondeur, finitions brillantes et désinfection totale, avec en plus un nettoyage du moteur.</p>
+      </div>
+    </div>
+ 
+</section>
+  <!-- Tarifs  -->
+<section id="tarifs">
+  <h2>Tarifs citadines/berlines 🚗</h2>
+  <div class="tarifs">
+    <div class="price">
+      <h3>Lavage Simple 🚗</h3>
+      <span>110 dhs</span>
+      <ul>
+        <li>✅ Lavage carrosserie</li>
+        <li>✅ Aspiration habitacle</li>
+        <li>✅ Nettoyage vitres intérieures et extérieures</li>
+        <li>✅ Nettoyage sièges</li>
+      </ul>
+    </div>
+    <div class="price">
+      <h3>Lavage Spécial 🧽</h3>
+      <span>200 dhs</span>
+      <ul>
+        <li>✅ Lavage carrosserie</li>
+        <li>✅ Lavage vitres intérieur et extérieur</li>
+        <li>✅ Nettoyage tapis</li>
+        <li>✅ Nettoyage tableau de bord & plastiques</li>
+        <li>✅ Nettoyage jantes</li>
+        <li>✅ Nettoyage sièges</li>
+      </ul>
+    </div>
+    <div class="price">
+      <h3>Lavage Premium ⭐</h3>
+      <span>300 dhs</span>
+      <ul>
+        <li>✅ Lavage complet + jantes + pneus brillants</li>
+        <li>✅ Aspiration en profondeur (sièges + tapis + coffre)</li>
+        <li>✅ Désinfection tableau de bord & plastiques</li>
+        <li>✅ Vitres intérieures & extérieures</li>
+        <li>✅ Spray carrosserie (brillance)</li>
+        <li>✅ Traitement Cuir & Tissu</li>
+        <li>✅ Séchage microfibres haute qualité</li>
+        <li>✅ Détail jantes & plastiques extérieurs</li>
+        <li>✅ Application parfum habitacle</li>
+        <li>✅ Lavage et nettoyage moteur complet</li>
+        <li>✅ Démoustiquage Carrosserie</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tarifs SUV -->
+  <h2 style="margin-top:50px;">Tarifs SUV 🚙</h2>
+  <div class="tarifs">
+    <div class="price">
+      <h3>Lavage Simple SUV 🚙</h3>
+      <span>140 dhs</span>
+      <ul>
+        <li>✅ Lavage carrosserie</li>
+        <li>✅ Aspiration habitacle</li>
+        <li>✅ Nettoyage vitres intérieures et extérieures</li>
+        <li>✅ Nettoyage sièges</li>
+      </ul>
+    </div>
+    <div class="price"> 
+      <h3>Lavage Spécial SUV 🧽</h3>
+      <span>230 dhs</span>
+      <ul>
+        <li>✅ Lavage carrosserie</li>
+        <li>✅ Lavage vitres intérieur et extérieur</li>
+        <li>✅ Nettoyage tapis</li>
+        <li>✅ Nettoyage tableau de bord & plastiques</li>
+        <li>✅ Nettoyage jantes</li>
+        <li>✅ Nettoyage sièges</li>
+      </ul>
+    </div>
+    <div class="price">
+      <h3>Lavage Premium SUV ⭐</h3>
+      <span>330 dhs</span>
+      <ul>
+        <li>✅ Lavage complet + jantes + pneus brillants</li>
+        <li>✅ Aspiration en profondeur (sièges + tapis + coffre)</li>
+        <li>✅ Désinfection tableau de bord & plastiques</li>
+        <li>✅ Vitres intérieures & extérieures</li>
+        <li>✅ Spray carrosserie (brillance)</li>
+        <li>✅ Traitement Cuir & Tissu</li>
+        <li>✅ Séchage microfibres haute qualité</li>
+        <li>✅ Détail jantes & plastiques extérieurs</li>
+        <li>✅ Application parfum habitacle</li>
+        <li>✅ Lavage et nettoyage moteur complet</li>
+        <li>✅ Démoustiquage Carrosserie</li>
+      </ul>
+    </div>
+  </div>
+
+  
+
+    <!-- Offre spéciale -->
+    <div class="price" style="margin-top:30px; background:#ffe600; color:#333;">
+      <h3>🎉 Pack Famille</h3>
+      <span>10 lavages = 1 lavage simple offert 🚗</span>
+      <p>Profitez de cette offre exclusive et gardez vos voitures toujours propres !</p>
+    </div>
+  </section>
+
+  
+
+  <!-- Avis Clients -->
+  <section id="avis">
+    <h2>Ils nous font confiance</h2>
+    <div class="avis">
+      <div class="avis-card">"Service impeccable, ma voiture brille comme neuve !" <b>- Yassine</b></div>
+      <div class="avis-card">"Ponctuel, rapide et super pro. Je recommande !" <b>- Salma</b></div>
+      <div class="avis-card">"Le meilleur lavage auto à domicile, éco-friendly en plus !" <b>- Mehdi</b></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>Téléphone / WhatsApp : <b>+212 6 49 74 64 16</b></p>
+    <a href="https://wa.me/212649746416" target="_blank" class="whatsapp">Réserver sur WhatsApp</a>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>FAQ - Questions fréquentes</h2>
+    <div class="faq-item">
+      <div class="faq-question">⏳ Combien de temps dure un lavage ?</div>
+      <div class="faq-answer">En moyenne entre 45 minutes et 1h30 selon la formule choisie.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">📍 Dans quelles zones intervenez-vous ?</div>
+      <div class="faq-answer">Nous intervenons à Casablanca et alentours. Contactez-nous pour confirmer votre quartier.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">💧 Utilisez-vous beaucoup d’eau ?</div>
+      <div class="faq-answer">Non, nous utilisons une méthode éco-responsable qui consomme 5 fois moins d’eau qu’un lavage classique.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">📅 Faut-il réserver à l’avance ?</div>
+      <div class="faq-answer">Oui, nous conseillons de réserver au moins 24h à l’avance via WhatsApp.</div>
+    </div>
+  </section>
+
+  <!-- WhatsApp Floating -->
+  <a href="https://wa.me/212649746416" target="_blank" class="whatsapp-float" aria-label="Réserver sur WhatsApp">💬</a>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Clean'n'Go - Tous droits réservés.</p>
+  </footer>
+
+  <!-- Script Animation Scroll -->
+  <script>
+    const sections = document.querySelectorAll("section");
+    const revealOnScroll = () => {
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          sec.classList.add("visible");
+        }
+      });
+    };
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll();
+
+    // Script FAQ toggle
+    document.querySelectorAll(".faq-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const answer = item.querySelector(".faq-answer");
+        answer.style.display = answer.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    // --- Avant/Après Slider (AJOUT) ---
+    (function(){
+      const range = document.getElementById('aa-range');
+      const overlay = document.getElementById('aa-overlay');
+      const handle = document.getElementById('aa-handle');
+      if(range && overlay && handle){
+        const update = v => { overlay.style.width = v + '%'; handle.style.left = v + '%'; };
+        range.addEventListener('input', e => update(e.target.value));
+        update(range.value);
+      }
+    })();
+  </script>
+</body>
+</html>
